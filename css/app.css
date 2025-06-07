@@ -1,13 +1,37 @@
 :root {
-  --blanco: white;
-  --negro: black;
+  --blanco: #e0e0e0;
+  --blanco-02: rgba(255, 255, 255, .02);
+  --blanco-05: rgba(255, 255, 255, .05);
+  --blanco-1: rgba(255, 255, 255, .1);
+  --blanco-2: rgba(255, 255, 255, .2);
+  --blanco-4: rgba(255, 255, 255, .4);
+  --negro: #181818;
+  --negro-2: rgba(0, 0, 0, .2);
+  --negro-3: rgba(0, 0, 0, .3);
+  --negro-4: rgba(0, 0, 0, .4);
+  --negro-5: rgba(0, 0, 0, .5);
+  --negro-8: rgba(0, 0, 0, .8);
   /* Typography */
   --tipo-titular: 'Inter', sans-serif;
   --tipo-principal: 'Poppins', sans-serif;
-  --blanco-4: rgba(255, 255, 255, .4) 
 }
 
-
+@media screen and (prefers-color-scheme: light) {
+  :root {
+    --blanco: #181818;
+    --blanco-02: rgba(0, 0, 0, .02);
+    --blanco-05: rgba(0, 0, 0, .05);
+    --blanco-1: rgba(0, 0, 0, .1);
+    --blanco-2: rgba(0, 0, 0, .2);
+    --blanco-4: rgba(0, 0, 0, .4);
+    --negro: #ffff;
+    --negro-2: rgba(255, 255, 255, .2);
+    --negro-3: rgba(255, 255, 255, .3);
+    --negro-4: rgba(255, 255, 255, .4);
+    --negro-5: rgba(255, 255, 255, .5);
+    --negro-8: rgba(255, 255, 255, .8);
+  }
+}
 
 
 * {
@@ -165,7 +189,7 @@ h6{
   top: 0;
   left: 0;
   z-index: 10;
-  background: rgba(0, 0, 0, 0.8);
+  background: var(--negro-8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -204,7 +228,7 @@ h6{
 }
 
 .main{
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--negro-2);
   min-height: 100vh;
   text-align: center;
   position: relative;
@@ -267,7 +291,7 @@ h6{
   background: linear-gradient(
     120deg,
     transparent,
-    rgba(255, 255, 255, 0.2),
+    var(--blanco-2),
     transparent
   );
   transition: 0.5s;
@@ -281,7 +305,7 @@ h6{
   border-color: var(--blanco);
   background-color: rgba(65, 0, 59, 0.4);
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px var(--negro-2);
 }
 
 .seccion .h2{
@@ -329,7 +353,7 @@ h6{
 .seccion .h4{
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: var(--negro-5);
   backdrop-filter: blur(10px);
   position: absolute;
   bottom: 0;
@@ -354,9 +378,9 @@ h6{
 }
 
 .works{
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--blanco-05);
   color: var(--blanco);
-  box-shadow: 0 0 3em 3em rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 3em 3em var(--negro-5);
 }
 
 .works .h2{
@@ -385,7 +409,7 @@ h6{
 .works .article{
   width: 100%;
   min-height: 300px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--blanco-05);
   border-radius: 1em;
   overflow: hidden;
   position: relative;
@@ -394,7 +418,7 @@ h6{
 
 .works .article:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 40px var(--negro-3);
 }
 
 .works .article .figure {
@@ -419,8 +443,8 @@ h6{
   height: 100%;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
+    var(--negro-8) 0%,
+    var(--negro-4) 50%,
     transparent 100%
   );
   position: absolute;
@@ -445,7 +469,7 @@ h6{
 }
 
 .about{
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--blanco-02);
 }
 
 .about .h2{
@@ -578,6 +602,159 @@ h6{
     transform: translate(-50%, -50%) scale(1);
     opacity: 0.3;
   }
+}
+
+.carousel-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  perspective: 2000px;
+  padding: 2em 0;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+.carousel {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease-out;
+  will-change: transform;
+}
+
+.carousel .article {
+  position: absolute;
+  width: 300px;
+  height: 400px;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: none;
+  visibility: hidden;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.carousel .article.active {
+  opacity: 1;
+  z-index: 2;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) translateZ(0);
+  visibility: visible;
+}
+
+.carousel .article.prev {
+  opacity: 0.6;
+  transform: translate(-50%, -50%) translateX(-250px) translateZ(-100px) rotateY(20deg);
+  z-index: 1;
+  visibility: visible;
+}
+
+.carousel .article.next {
+  opacity: 0.6;
+  transform: translate(-50%, -50%) translateX(250px) translateZ(-100px) rotateY(-20deg);
+  z-index: 1;
+  visibility: visible;
+}
+
+/* Estilos para el artículo en el carrusel */
+.carousel .article {
+  background: var(--blanco-05);
+  border-radius: 1em;
+  overflow: hidden;
+  box-shadow: 0 10px 30px var(--negro-3);
+}
+
+.carousel .article .figure {
+  width: 100%;
+  height: 70%;
+  position: relative;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.carousel .article .img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease-out;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+}
+
+.carousel .article .h4 {
+  width: 100%;
+  height: 30%;
+  background: linear-gradient(
+    to top,
+    var(--negro-8) 0%,
+    var(--negro-4) 50%,
+    transparent 100%
+  );
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.5em;
+  color: var(--blanco);
+  font-size: 1.2em;
+  font-family: var(--tipo-titular);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.carousel-controls {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2em;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.carousel-button {
+  background: var(--blanco-1);
+  border: none;
+  color: var(--blanco);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-out;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  pointer-events: auto;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.carousel-button:hover {
+  background: var(--blanco-2);
+  transform: scale(1.1) translateZ(0);
+  -webkit-transform: scale(1.1) translateZ(0);
+}
+
+.carousel-button:active {
+  transform: scale(0.95) translateZ(0);
+  -webkit-transform: scale(0.95) translateZ(0);
 }
 
 

@@ -1,10 +1,21 @@
 'use strict'
 
-/*jquery es una libreria que se usa para manipular el DOM de manera mas facil, es decir, se usa para seleccionar elementos del DOM y manipularlos*/ 
-/*ready es un evento que se ejecuta cuando el documento esta listo*/
-
+/**
+ * Documento listo para manipulación
+ * Este evento se ejecuta cuando el DOM está completamente cargado
+ */
 $(document).ready(function() {
-    // Optimizar el cursor
+    // =========================================================================
+    // Cursor Personalizado
+    // =========================================================================
+    
+    /**
+     * Objeto que maneja el estado del cursor personalizado
+     * @property {number} x - Posición actual X del cursor
+     * @property {number} y - Posición actual Y del cursor
+     * @property {number} targetX - Posición objetivo X del cursor
+     * @property {number} targetY - Posición objetivo Y del cursor
+     */
     let cursor = {
         x: 0,
         y: 0,
@@ -12,14 +23,19 @@ $(document).ready(function() {
         targetY: 0
     };
 
-    let rafId = null;
-    const cursorElement = $('#cursor');
+    let rafId = null; // ID para cancelar la animación si es necesario
+    const cursorElement = $('#cursor'); // Referencia al elemento del cursor
 
-    // Optimizar la actualización del cursor usando requestAnimationFrame
+    /**
+     * Actualiza la posición del cursor con animación suave
+     * Utiliza requestAnimationFrame para mejor rendimiento
+     */
     function updateCursor() {
+        // Interpolación suave entre la posición actual y la objetivo
         cursor.x += (cursor.targetX - cursor.x) * 0.2;
         cursor.y += (cursor.targetY - cursor.y) * 0.2;
         
+        // Actualiza la posición del cursor usando transform para mejor rendimiento
         cursorElement.css({
             transform: `translate(${cursor.x}px, ${cursor.y}px)`
         });
@@ -27,10 +43,13 @@ $(document).ready(function() {
         rafId = requestAnimationFrame(updateCursor);
     }
 
-    // Iniciar la animación del cursor
+    // Inicia la animación del cursor
     updateCursor();
 
-    // Optimizar el evento mousemove usando throttling
+    /**
+     * Maneja el movimiento del mouse con throttling para mejor rendimiento
+     * Limita las actualizaciones a 60fps
+     */
     let lastMove = 0;
     $('body').on('mousemove', function(e) {
         const now = Date.now();
@@ -41,7 +60,14 @@ $(document).ready(function() {
         }
     });
 
-    // Optimizar los efectos hover
+    // =========================================================================
+    // Efectos de Hover
+    // =========================================================================
+    
+    /**
+     * Aplica efectos de hover a elementos interactivos
+     * Cambia el tamaño del cursor cuando se pasa sobre elementos interactivos
+     */
     const $interactiveElements = $('a, button, .article');
     $interactiveElements.on({
         mouseenter: function() {
@@ -52,7 +78,14 @@ $(document).ready(function() {
         }
     });
 
-    // Optimizar el scroll suave
+    // =========================================================================
+    // Navegación Suave
+    // =========================================================================
+    
+    /**
+     * Implementa scroll suave para enlaces de navegación
+     * Previene el comportamiento por defecto y anima el scroll
+     */
     $('a[href^="#"]').on('click', function(e) {
         e.preventDefault();
         const target = $(this.hash);
@@ -63,7 +96,14 @@ $(document).ready(function() {
         }
     });
 
-    // Optimizar el scroll reveal usando Intersection Observer
+    // =========================================================================
+    // Animación de Scroll
+    // =========================================================================
+    
+    /**
+     * Implementa animaciones al hacer scroll usando Intersection Observer
+     * Más eficiente que escuchar eventos de scroll
+     */
     const observerOptions = {
         root: null,
         rootMargin: '0px',
@@ -78,49 +118,78 @@ $(document).ready(function() {
         });
     }, observerOptions);
 
+    // Observa todas las secciones para animarlas
     $('.seccion').each(function() {
         observer.observe(this);
     });
 
-    // Optimizar el carrusel
+    // =========================================================================
+    // Carrusel 3D
+    // =========================================================================
+    
+    /**
+     * Estado del carrusel
+     * @property {number} currentIndex - Índice del slide actual
+     * @property {number} totalSlides - Número total de slides
+     */
     let currentIndex = 0;
     const $carousel = $('.carousel');
     const $articles = $('.carousel .article');
     const totalSlides = $articles.length;
     let isAnimating = false;
 
+    /**
+     * Inicializa el carrusel
+     * Establece el slide inicial y actualiza las posiciones
+     */
     function initializeCarousel() {
         $articles.removeClass('active prev next');
         $articles.eq(currentIndex).addClass('active');
         updateSlides();
     }
 
+    /**
+     * Actualiza las posiciones de los slides
+     * Maneja las clases y estados de los slides
+     */
     function updateSlides() {
         if (isAnimating) return;
         isAnimating = true;
 
         $articles.removeClass('active prev next');
         
+        // Establece el slide activo
         $articles.eq(currentIndex).addClass('active');
         
+        // Establece el slide anterior
         let prevIndex = (currentIndex - 1 + totalSlides) % totalSlides;
         $articles.eq(prevIndex).addClass('prev');
         
+        // Establece el slide siguiente
         let nextIndex = (currentIndex + 1) % totalSlides;
         $articles.eq(nextIndex).addClass('next');
 
+        // Resetea el estado de animación después de la transición
         setTimeout(() => {
             isAnimating = false;
-        }, 500); // Coincide con la duración de la transición CSS
+        }, 500);
     }
 
+    /**
+     * Mueve el carrusel en la dirección especificada
+     * @param {number} direction - Dirección del movimiento (-1: anterior, 1: siguiente)
+     */
     function moveCarousel(direction) {
         if (isAnimating) return;
         currentIndex = (currentIndex + direction + totalSlides) % totalSlides;
         updateSlides();
     }
 
-    // Optimizar los controles del carrusel
+    // =========================================================================
+    // Controles del Carrusel
+    // =========================================================================
+    
+    // Botones de navegación
     $('.carousel-button.prev').on('click', function() {
         moveCarousel(-1);
     });
@@ -129,11 +198,14 @@ $(document).ready(function() {
         moveCarousel(1);
     });
 
-    // Optimizar la navegación por teclado
+    /**
+     * Navegación por teclado con throttling
+     * Previene múltiples pulsaciones rápidas
+     */
     let lastKeyPress = 0;
     $(document).on('keydown', function(e) {
         const now = Date.now();
-        if (now - lastKeyPress < 500) return; // Prevenir múltiples pulsaciones rápidas
+        if (now - lastKeyPress < 500) return;
 
         if (e.key === 'ArrowLeft') {
             moveCarousel(-1);
@@ -144,7 +216,14 @@ $(document).ready(function() {
         }
     });
 
-    // Optimizar el soporte táctil
+    // =========================================================================
+    // Soporte Táctil
+    // =========================================================================
+    
+    /**
+     * Implementa navegación táctil para dispositivos móviles
+     * Maneja eventos touch para swipe
+     */
     let touchStartX = 0;
     let touchEndX = 0;
     let isDragging = false;
@@ -158,7 +237,7 @@ $(document).ready(function() {
     $('.carousel-container').on('touchmove', function(e) {
         if (!isDragging) return;
         const now = Date.now();
-        if (now - lastTouchMove < 16) return; // Limitar a 60fps
+        if (now - lastTouchMove < 16) return;
 
         touchEndX = e.originalEvent.touches[0].clientX;
         lastTouchMove = now;
@@ -170,6 +249,10 @@ $(document).ready(function() {
         handleSwipe();
     });
 
+    /**
+     * Maneja el gesto de swipe
+     * Determina la dirección y mueve el carrusel
+     */
     function handleSwipe() {
         const swipeThreshold = 50;
         const diff = touchStartX - touchEndX;
@@ -183,12 +266,19 @@ $(document).ready(function() {
         }
     }
 
-    // Prevenir el comportamiento táctil por defecto
+    // Previene el comportamiento táctil por defecto
     $('.carousel-container').on('touchmove', function(e) {
         e.preventDefault();
     }, { passive: false });
 
-    // Limpiar recursos cuando se desmonte el componente
+    // =========================================================================
+    // Limpieza de Recursos
+    // =========================================================================
+    
+    /**
+     * Limpia los recursos cuando se desmonta el componente
+     * Cancela animaciones y desconecta observadores
+     */
     $(window).on('unload', function() {
         if (rafId) {
             cancelAnimationFrame(rafId);
@@ -196,6 +286,6 @@ $(document).ready(function() {
         observer.disconnect();
     });
 
-    // Inicializar el carrusel
+    // Inicializa el carrusel
     initializeCarousel();
 });

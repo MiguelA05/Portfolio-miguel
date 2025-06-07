@@ -1,30 +1,39 @@
+/* ==========================================================================
+   Variables Globales
+   ========================================================================== */
 :root {
-  --blanco: #e0e0e0;
-  --blanco-02: rgba(255, 255, 255, .02);
-  --blanco-05: rgba(255, 255, 255, .05);
-  --blanco-1: rgba(255, 255, 255, .1);
-  --blanco-2: rgba(255, 255, 255, .2);
-  --blanco-4: rgba(255, 255, 255, .4);
-  --negro: #181818;
-  --negro-2: rgba(0, 0, 0, .2);
-  --negro-3: rgba(0, 0, 0, .3);
-  --negro-4: rgba(0, 0, 0, .4);
-  --negro-5: rgba(0, 0, 0, .5);
-  --negro-8: rgba(0, 0, 0, .8);
-  /* Typography */
-  --tipo-titular: 'Inter', sans-serif;
-  --tipo-principal: 'Poppins', sans-serif;
+  /* Colores principales */
+  --blanco: #e0e0e0;          /* Color base para texto y elementos claros */
+  --blanco-02: rgba(255, 255, 255, .02);  /* Fondo muy sutil */
+  --blanco-05: rgba(255, 255, 255, .05);  /* Fondo semi-transparente */
+  --blanco-1: rgba(255, 255, 255, .1);    /* Fondo con 10% de opacidad */
+  --blanco-2: rgba(255, 255, 255, .2);    /* Fondo con 20% de opacidad */
+  --blanco-4: rgba(255, 255, 255, .4);    /* Fondo con 40% de opacidad */
+  --negro: #181818;           /* Color base para fondos oscuros */
+  --negro-2: rgba(0, 0, 0, .2);  /* Sombra suave */
+  --negro-3: rgba(0, 0, 0, .3);  /* Sombra media */
+  --negro-4: rgba(0, 0, 0, .4);  /* Sombra más pronunciada */
+  --negro-5: rgba(0, 0, 0, .5);  /* Sombra fuerte */
+  --negro-8: rgba(0, 0, 0, .8);  /* Sombra muy oscura */
+
+  /* Tipografía */
+  --tipo-titular: 'Inter', sans-serif;    /* Fuente para títulos */
+  --tipo-principal: 'Poppins', sans-serif; /* Fuente para texto general */
 }
 
+/* ==========================================================================
+   Modo Claro
+   ========================================================================== */
 @media screen and (prefers-color-scheme: light) {
   :root {
-    --blanco: #181818;
+    /* Invertimos los colores para el modo claro */
+    --blanco: #181818;        /* Texto oscuro para modo claro */
     --blanco-02: rgba(0, 0, 0, .02);
     --blanco-05: rgba(0, 0, 0, .05);
     --blanco-1: rgba(0, 0, 0, .1);
     --blanco-2: rgba(0, 0, 0, .2);
     --blanco-4: rgba(0, 0, 0, .4);
-    --negro: #ffff;
+    --negro: #ffff;           /* Fondo claro para modo claro */
     --negro-2: rgba(255, 255, 255, .2);
     --negro-3: rgba(255, 255, 255, .3);
     --negro-4: rgba(255, 255, 255, .4);
@@ -33,17 +42,22 @@
   }
 }
 
-
+/* ==========================================================================
+   Reset CSS
+   ========================================================================== */
 * {
   margin: 0;
   padding: 0;
   border: 0;
-  box-sizing: border-box;
+  box-sizing: border-box;     /* Incluye padding y border en el ancho/alto */
   vertical-align: baseline;
 }
 
-html{
-  scroll-behavior: smooth;
+/* ==========================================================================
+   Configuración Base
+   ========================================================================== */
+html {
+  scroll-behavior: smooth;    /* Scroll suave al navegar */
 }
 
 table, tr, td {
@@ -97,13 +111,13 @@ form, button, input, textarea, select {
 body {
   font-family: var(--tipo-principal);
   font-size: 100%;
-  min-height: 100vh;
+  min-height: 100vh;          /* Altura mínima de toda la ventana */
   background-color: var(--negro);
-  font-smooth: always;
+  font-smooth: always;        /* Suavizado de fuentes */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--blanco);
-  cursor: none;
+  cursor: none;               /* Oculta el cursor por defecto */
 }
 
 h1, 
@@ -185,12 +199,12 @@ h6{
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
+  position: fixed;            /* Header fijo en la parte superior */
   top: 0;
   left: 0;
   z-index: 10;
   background: var(--negro-8);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px); /* Efecto de desenfoque */
   -webkit-backdrop-filter: blur(10px);
 }
 
@@ -559,13 +573,13 @@ h6{
   width: 2.5em;
   height: 2.5em;
   background-color: var(--blanco);
-  position: fixed;
+  position: fixed;            /* Se mantiene fijo en la pantalla */
   top: 0;
   left: 0;
-  z-index: 9999;
-  pointer-events: none;
-  border-radius: 50%;
-  mix-blend-mode: difference;
+  z-index: 9999;             /* Siempre visible por encima de todo */
+  pointer-events: none;       /* No interfiere con clicks */
+  border-radius: 50%;         /* Forma circular */
+  mix-blend-mode: difference; /* Invierte colores al pasar sobre elementos */
   transition: transform 0.2s ease;
   transform: translate(-50%, -50%);
 }
@@ -586,7 +600,7 @@ h6{
   border-radius: 50%;
   transform: translate(-50%, -50%);
   opacity: 0.3;
-  animation: pulse 2s infinite;
+  animation: pulse 2s infinite; /* Animación de pulso continua */
 }
 
 @keyframes pulse {
@@ -609,20 +623,20 @@ h6{
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
-  perspective: 2000px;
+  perspective: 2000px;        /* Profundidad del efecto 3D */
   padding: 2em 0;
   height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
-  will-change: transform;
+  will-change: transform;     /* Optimización de rendimiento */
 }
 
 .carousel {
   width: 100%;
   height: 400px;
   position: relative;
-  transform-style: preserve-3d;
+  transform-style: preserve-3d; /* Mantiene el efecto 3D */
   transition: transform 0.5s ease-out;
   will-change: transform;
 }
